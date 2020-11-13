@@ -7,6 +7,7 @@ async function query_graphql(payload, method = 'GET') {
 
 site_type = "";
 
+// parse song info from active tab
 async function parse(tab) {
     domain = new URL(tab.url).hostname;
     if (domain == "www.youtube.com") {
@@ -70,6 +71,9 @@ async function parse_spotify(tab) {
     });
 }
 
+// user needs to have an account in order to use this extension
+// either login or create new account.
+// mostly so that we don't have to check everytime user submits a review 
 async function register() {
     username = $('#username').text();
     password = $('#password').text();
@@ -139,7 +143,8 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById("login").addEventListener("click", login);
 });
 
-
+// here's the main function
+// this is called when the extension thing is clicked and loaded
 async function main() {
     let account = await browser.storage.local.get("jp_music_bot_thing_account");
     console.log(account);
@@ -163,6 +168,17 @@ async function main() {
 
 document.addEventListener('DOMContentLoaded', main);
 
+// hide these buttons that shouldn't be here by default
+// idk why I need to do this
+document.addEventListener('DOMContentLoaded', function () {
+    $("#submit_new_link").hide();
+    $("#submit_confirm").hide();
+    $("#update_link_info").hide();
+    $("#goto_review").hide();
+});
+
+// submitting song info
+// we first check if we have a matching entry in the database
 async function submit_check() {
     console.log('checking for existing data before submitting...');
     $('#status').text("loading...");
@@ -241,20 +257,12 @@ async function submit() {
     await rate(song_id)
 }
 
-async function rate(song_id) {
-    $('#song_name_wrapper').remove();
-    $('#artist_name_wrapper').remove();
-    $('#link_wrapper').remove();
-    $('#submit').remove();
-    $('#goto_review').remove();
-    $('#review_wrapper').show();
-    document.getElementById("submit_review").addEventListener("click", get_submit_review(song_id));
-}
-
 document.addEventListener('DOMContentLoaded', function () {
     document.getElementById("submit").addEventListener("click", submit_check);
 });
 
+// adding and remove artist fields
+// handle when a song have more than one artist
 artist_field_num = 1;
 
 function add_artist_field() {
@@ -289,6 +297,19 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById("remove_artist0").addEventListener("click", remove_artist_field(0));
 });
 
+// rating functions
+async function rate(song_id) {
+    // this function only set up the structure of the tab (aka display)
+    // see submit_review for actually submitted the rating / review to database
+    $('#song_name_wrapper').remove();
+    $('#artist_name_wrapper').remove();
+    $('#link_wrapper').remove();
+    $('#submit').remove();
+    $('#goto_review').remove();
+    $('#review_wrapper').show();
+    document.getElementById("submit_review").addEventListener("click", get_submit_review(song_id));
+}
+
 rating = 5;
 
 function rating_click_func(star) {
@@ -304,6 +325,7 @@ function rating_click_func(star) {
         }
     }
 }
+
 for (star = 1; star <= 10; star++) {
     let s = star;
     document.addEventListener('DOMContentLoaded', function () {
@@ -334,14 +356,6 @@ function get_submit_review(song_id) {
     }
 }
 
-// idk why I need to do this
-document.addEventListener('DOMContentLoaded', function () {
-    $("#submit_new_link").hide();
-    $("#submit_confirm").hide();
-    $("#update_link_info").hide();
-    $("#goto_review").hide();
-});
-
 document.addEventListener('DOMContentLoaded', function () {
     document.getElementById("submit_confirm").addEventListener("click", submit);
 });
@@ -352,11 +366,6 @@ function submit_new_link(song_id) {
         add_link_payload = "mutation{newLink(link:\"" + encodeURIComponent(link) + "\",linkType:\"" + site_type + "\",songId:" + song_id + "){ok}}";
         add_link_ok = await query_graphql(add_link_payload, 'POST');
         $('#status').append("<br>Submitted new " + site_type + " link!");
-
-        $('#song_name_wrapper').remove();
-        $('#artist_name_wrapper').remove();
-        $('#link_wrapper').remove();
-        $('#submit').remove();
 
         await rate(song_id)
     }
