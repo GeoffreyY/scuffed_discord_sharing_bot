@@ -1,7 +1,7 @@
 server_url = 'http://127.0.0.1:5000/graphql'
 
 async function query_graphql(payload, method = 'GET') {
-    payload = "?query=" + payload;
+    payload = "?query=" + encodeURIComponent(payload);
     return fetch(server_url + payload, { method: method }).then(response => response.json()).then(data => { if ('errors' in data) { for (error of data.errors) console.log(error.message) } return data }).then(data => data['data'])
 }
 
@@ -322,7 +322,7 @@ function get_submit_review(song_id) {
             review_payload = `mutation{review(username: "${user_account.username}", password: "${user_account.password}", songId: ${song_id}, value: ${rating}){ok reviewId}}`;
             res = await query_graphql(review_payload, 'POST');
         } else {
-            review_payload = `mutation{review(username: "${user_account.username}", password: "${user_account.password}", songId: ${song_id}, value: ${rating}, detailReview: "${detail_review}"){ok reviewId}}`;
+            review_payload = `mutation{review(username: "${user_account.username}", password: "${user_account.password}", songId: ${song_id}, value: ${rating}, detailReview: "${encodeURIComponent(detail_review)}"){ok reviewId}}`;
             res = await query_graphql(review_payload, 'POST');
         }
         console.log(res);

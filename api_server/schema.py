@@ -582,7 +582,7 @@ class ReviewMutation(graphene.Mutation):
         if reviews.count() == 0:
             if detail_review:
                 new_review = RatingModel(
-                    user=matching_user, song=song, value=value, review=detail_review)
+                    user=matching_user, song=song, value=value, review=unquote(detail_review))
             else:
                 new_review = RatingModel(
                     user=matching_user, song=song, value=value)
@@ -594,7 +594,7 @@ class ReviewMutation(graphene.Mutation):
             review = reviews.one()
             review.value = value
             if review:
-                review.review = detail_review
+                review.review = unquote(detail_review)
             db_session.commit()
             return ReviewMutation(ok=True, review_id=review.rating_id)
 
