@@ -24,8 +24,15 @@ class User(Base):
 
     username = Column(String, primary_key=True)
     password = Column(String, nullable=False)
-    discord_id = Column(Integer)
     is_admin = Column(Boolean, nullable=False, default=False)
+
+
+class UserDiscord(Base):
+    __tablename__ = 'user_discord'
+
+    discord_id = Column(Integer, primary_key=True)
+    username = Column(String, ForeignKey('users.username'))
+    user = relationship('User', backref='discord')
 
 
 # NOTE: field 'id' is used by graphene, so we can't have field named 'id'

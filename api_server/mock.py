@@ -1,11 +1,11 @@
-from models import db_session, User, Song, SongName, Artist, ArtistName, Link, Rating, Tag, TagName
+from models import db_session, User, UserDiscord, Song, SongName, Artist, ArtistName, Link, Rating, Tag, TagName
 
 
 def init_db():
     me = User(username='GeoffreyY',
               password='password123',
-              discord_id=136047106757492736,
               is_admin=True)
+    my_discord = UserDiscord(discord_id=136047106757492736, user=me)
     db_session.add(me)
 
     jpop = Tag(name='jpop')

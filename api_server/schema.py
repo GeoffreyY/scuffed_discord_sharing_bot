@@ -2,7 +2,7 @@ import graphene
 from graphene import Node, Connection, Field
 from graphene_sqlalchemy import SQLAlchemyObjectType, SQLAlchemyConnectionField
 from models import db_session
-from models import User as UserModel, Song as SongModel, SongName as SongNameModel, Artist as ArtistModel, ArtistName as ArtistNameModel, Link as LinkModel, Rating as RatingModel, Tag as TagModel, TagName as TagNameModel, song_tag_table
+from models import User as UserModel, UserDiscord as UserDiscordModel, Song as SongModel, SongName as SongNameModel, Artist as ArtistModel, ArtistName as ArtistNameModel, Link as LinkModel, Rating as RatingModel, Tag as TagModel, TagName as TagNameModel, song_tag_table
 from graphene_sqlalchemy_filter import FilterableConnectionField, FilterSet
 
 from sqlalchemy import or_
@@ -124,6 +124,18 @@ class User(SQLAlchemyObjectType):
 class UserNodeConnection(Connection):
     class Meta:
         node = User
+
+
+class UserDiscord(SQLAlchemyObjectType):
+    class Meta:
+        model = UserDiscordModel
+        interfaces = (Node, )
+        connection_field_factory = CustomField.factory
+
+
+class UserDiscordNodeConnection(Connection):
+    class Meta:
+        node = UserDiscord
 
 
 class Song(SQLAlchemyObjectType):
