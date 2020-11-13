@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="tes.css" />
+
+    <script src="../thirdparty/jquery-3.5.1.min.js"></script>
+    <script src="popup.js"></script>
+</head>
+
+<body>
+    <div id="site_type">I don't recgonize this link @_@</div>
+    <div id="divider">==========</div>
+    <div id="create_account">
+        <div id="username_wrapper">
+            Username: <div id="username" contenteditable="true" style=" color: #dddddd">Username (this is editable)
+            </div>
+        </div>
+        <div id="password_wrapper">
+            Password: <div id="password" contenteditable="true" style=" color: #dddddd">Password (this is editable)
+            </div>
+        </div>
+        <div id="register" class="button-div">&nbsp;Register&nbsp;</div>
+        <div id="login" class="button-div">&nbsp;Login&nbsp;</div>
+    </div>
+
+    <div id="song_name_wrapper">
+        Song Name: <div id="song_name" contenteditable="true" style=" color: #dddddd">song_name_field</div>
+    </div>
+    <div id="artist_name_wrapper" style="display:inline;">
+        Artist:&nbsp;<span id="add_artist" class="button-div">&nbsp;+&nbsp;</span>
+        <div id="artist_name_wrapper_inner0">
+            <div id="artist_name_inner0" contenteditable="true" style="display: inline-block; color: #dddddd">
+                new_artist_field
+            </div><span id="remove_artist0" class="remove-button-div">&nbsp;-&nbsp;</span>
+        </div>
+    </div>
+    <div id="link_wrapper">
+        Link: <div id="link" contenteditable="true" style="color: #dddddd">link_field</div>
+    </div>
+    <div id="submit" class="button-div">&nbsp;Submit Song&nbsp;</div>
+    <div id="submit_new_link" class="button-div">&nbsp;New link to song&nbsp;</div>
+    <div id="submit_confirm" class="button-div">&nbsp;Create a different song entry&nbsp;</div>
+    <div id="update_link_info" class="button-div">&nbsp;Update link info&nbsp;</div>
+    <div id="goto_review" class="button-div">&nbsp;Review&nbsp;</div>
+
+    <div id="review_wrapper" hidden>Your rating:
+        <div id="rating" style="color: #dddddd">
+            <div id="star1" class='star'>★</div>
+            <div id="star2" class='star'>★</div>
+            <div id="star3" class='star'>★</div>
+            <div id="star4" class='star'>★</div>
+            <div id="star5" class='star'>★</div>
+            <div id="star6" class='star'>☆</div>
+            <div id="star7" class='star'>☆</div>
+            <div id="star8" class='star'>☆</div>
+            <div id="star9" class='star'>☆</div>
+            <div id="star10" class='star'>☆</div>
+        </div>
+        <div id="detailed_review_wrapper">
+            Your detailed review:
+            <div id="detailed_review" contenteditable="true" style="color: #dddddd">detailed_review_here</div>
+        </div>
+        <div id="submit_review" class="button-div">&nbsp;Submit Review&nbsp;</div>
+    </div>
+
+    <div id="divider">==========</div>
+    <div id="status"></div>
+</body>
+
+</html>

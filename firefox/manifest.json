@@ -1,0 +1,30 @@
+{
+    "manifest_version": 2,
+    "name": "Test jp db thingy",
+    "version": "1.0",
+    "description": "A jp song database thingy",
+    "icons": {
+        "32": "icons/jp_music_thingy_logo.png"
+    },
+    "permissions": [
+        "activeTab",
+        "storage"
+    ],
+    "browser_action": {
+        "default_icon": "icons/jp_music_thingy_logo.png",
+        "default_title": "Jp music thingy",
+        "default_popup": "popup/what.html"
+    },
+    "content_scripts": [
+        {
+            "matches": [
+                "*://*.youtube.com/*",
+                "*://open.spotify.com/*"
+            ],
+            "js": [
+                "thirdparty/jquery-3.5.1.min.js",
+                "firefox.js"
+            ]
+        }
+    ]
+}

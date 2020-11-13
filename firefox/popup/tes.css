@@ -1,0 +1,20 @@
+html {
+    background-color: #121212;
+    color: cadetblue;
+}
+
+.button-div {
+    background-color: cadetblue;
+    color: black;
+    display: inline-block;
+}
+
+.remove-button-div {
+    background-color: firebrick;
+    color: black;
+    display: inline-block;
+}
+
+.star {
+    display: inline-block;
+}
