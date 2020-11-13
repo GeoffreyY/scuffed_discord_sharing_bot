@@ -1,5 +1,5 @@
 import datetime
-from sqlalchemy import create_engine, Table, Column, Boolean, Integer, String, Float, ForeignKey, DateTime
+from sqlalchemy import create_engine, Table, Column, Boolean, Integer, String, Float, ForeignKey, DateTime, BigInteger
 from sqlalchemy.orm import scoped_session, sessionmaker, relationship, backref
 #from sqlalchemy.orm import registry
 from sqlalchemy.schema import UniqueConstraint
@@ -32,7 +32,7 @@ class User(Base):
 class UserDiscord(Base):
     __tablename__ = 'user_discord'
 
-    discord_id = Column(Integer, primary_key=True)
+    discord_id = Column(BigInteger, primary_key=True)
     username = Column(String, ForeignKey('users.username'))
     user = relationship('User', backref='discord', lazy='bulk')
 
