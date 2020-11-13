@@ -322,7 +322,7 @@ function get_submit_review(song_id) {
             review_payload = `mutation{review(username: "${user_account.username}", password: "${user_account.password}", songId: ${song_id}, value: ${rating}){ok reviewId}}`;
             res = await query_graphql(review_payload, 'POST');
         } else {
-            review_payload = `mutation{review(username: "${user_account.username}", password: "${user_account.password}", songId: ${song_id}, value: ${rating}, detailReview: ${detail_review}){ok reviewId}}`;
+            review_payload = `mutation{review(username: "${user_account.username}", password: "${user_account.password}", songId: ${song_id}, value: ${rating}, detailReview: "${detail_review}"){ok reviewId}}`;
             res = await query_graphql(review_payload, 'POST');
         }
         console.log(res);
