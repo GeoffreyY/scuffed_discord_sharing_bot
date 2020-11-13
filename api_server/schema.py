@@ -255,6 +255,11 @@ class Query(graphene.ObjectType):
             return True
         return False
 
+    get_discord_user = Field(lambda: User, discord_id=graphene.Float())
+
+    def resolve_get_discord_user(self, info, discord_id):
+        return UserDiscordModel.query.get(discord_id).user
+
 
 class NewArtistMutation(graphene.Mutation):
     class Arguments:
