@@ -7,6 +7,8 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.sql import func
 import uuid
 
+from sqlalchemy_bulk_lazy_loader import BulkLazyLoader
+BulkLazyLoader.register_loader()
 
 #engine = create_engine("sqlite:///database.sqlite3", echo=True, future=True)
 engine = create_engine("sqlite:///database.sqlite3", echo=True, )
@@ -32,7 +34,7 @@ class UserDiscord(Base):
 
     discord_id = Column(Integer, primary_key=True)
     username = Column(String, ForeignKey('users.username'))
-    user = relationship('User', backref='discord')
+    user = relationship('User', backref='discord', lazy='bulk')
 
 
 # NOTE: field 'id' is used by graphene, so we can't have field named 'id'
@@ -42,8 +44,9 @@ class Song(Base):
     song_id = Column(Integer, primary_key=True)
     name = Column(String, nullable=False)
     artists = relationship(
-        'Artist', secondary='song_artist_table', backref='songs')
-    tags = relationship('Tag', secondary='song_tag_table', backref='songs')
+        'Artist', secondary='song_artist_table', backref='songs', lazy='bulk')
+    tags = relationship('Tag', secondary='song_tag_table',
+                        backref='songs', lazy='bulk')
     time_created = Column(DateTime, server_default=func.now())
     time_updated = Column(DateTime, onupdate=func.now())
 
@@ -54,7 +57,7 @@ class SongName(Base):
     song_name_id = Column(Integer, primary_key=True)
     name = Column(String, nullable=False)
     song_id = Column(Integer, ForeignKey('songs.song_id'))
-    song = relationship('Song', backref='alt_names')
+    song = relationship('Song', backref='alt_names', lazy='bulk')
 
 
 class Artist(Base):
@@ -72,7 +75,7 @@ class ArtistName(Base):
     artist_name_id = Column(Integer, primary_key=True)
     name = Column(String, nullable=False)
     artist_id = Column(Integer, ForeignKey('artists.artist_id'))
-    artist = relationship('Artist', backref='alt_names')
+    artist = relationship('Artist', backref='alt_names', lazy='bulk')
 
 
 song_artist_table = Table('song_artist_table', Base.metadata,
@@ -96,7 +99,7 @@ class TagName(Base):
     tag_name_id = Column(Integer, primary_key=True)
     name = Column(String, nullable=False)
     tag_id = Column(Integer, ForeignKey(Tag.tag_id))
-    tag = relationship('Tag', backref='alt_names')
+    tag = relationship('Tag', backref='alt_names', lazy='bulk')
 
 
 song_tag_table = Table('song_tag_table', Base.metadata,
@@ -113,7 +116,7 @@ class Link(Base):
     link = Column(String, primary_key=True)
     link_type = Column(String)
     song_id = Column(Integer, ForeignKey('songs.song_id'), nullable=False)
-    song = relationship('Song', backref='links')
+    song = relationship('Song', backref='links', lazy='bulk')
 
 
 class Rating(Base):
@@ -121,9 +124,9 @@ class Rating(Base):
 
     rating_id = Column(Integer, primary_key=True)
     user_id = Column(String, ForeignKey('users.username'), nullable=False)
-    user = relationship('User', backref='ratings')
+    user = relationship('User', backref='ratings', lazy='bulk')
     song_id = Column(Integer, ForeignKey('songs.song_id'), nullable=False)
-    song = relationship('Song', backref='ratings')
+    song = relationship('Song', backref='ratings', lazy='bulk')
     value = Column(Float, nullable=False)
     review = Column(String)
     time_created = Column(DateTime, server_default=func.now())
