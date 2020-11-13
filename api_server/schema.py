@@ -9,6 +9,36 @@ from sqlalchemy import or_
 
 from urllib.parse import unquote
 
+from graphene.types import Scalar
+from graphql.language.ast import IntValue as IntValueNode
+
+
+class BigInt(Scalar):
+    """
+    The `BigInt` scalar type represents non-fractional whole numeric values.
+    `BigInt` is not constrained to 32-bit like the `Int` type and thus is a less
+    compatible type.
+    """
+
+    @staticmethod
+    def coerce_int(value):
+        try:
+            num = int(value)
+        except ValueError:
+            try:
+                num = int(float(value))
+            except ValueError:
+                return None
+        return num
+
+    serialize = coerce_int
+    parse_value = coerce_int
+
+    @staticmethod
+    def parse_literal(ast):
+        if isinstance(ast, IntValueNode):
+            return int(ast.value)
+
 
 class SongFilter(FilterSet):
     class Meta:
@@ -255,7 +285,7 @@ class Query(graphene.ObjectType):
             return True
         return False
 
-    get_discord_user = Field(lambda: User, discord_id=graphene.Float())
+    get_discord_user = Field(lambda: User, discord_id=BigInt())
 
     def resolve_get_discord_user(self, info, discord_id):
         return UserDiscordModel.query.get(discord_id).user
