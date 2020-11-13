@@ -117,7 +117,7 @@ class User(SQLAlchemyObjectType):
     class Meta:
         model = UserModel
         interfaces = (Node, )
-        exclude = ('password',)
+        exclude_fields = ('password',)
         connection_field_factory = CustomField.factory
 
 
