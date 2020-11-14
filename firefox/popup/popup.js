@@ -1,4 +1,4 @@
-server_url = 'http://127.0.0.1:5000/graphql'
+server_url = 'http://jp-discord-music-bot-test.herokuapp.com/graphql'
 
 async function query_graphql(payload, method = 'GET') {
     payload = "?query=" + encodeURIComponent(payload);
